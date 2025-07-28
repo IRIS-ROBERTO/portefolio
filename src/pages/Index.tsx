@@ -125,12 +125,18 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background font-sans">
       {/* Navigation Header */}
-      <header className="fixed top-0 z-50 w-full bg-background/90 shadow-lg border-b border-border backdrop-blur-lg">
+      <header className="fixed top-0 z-50 w-full bg-background/80 backdrop-blur-xl shadow-lg border-b border-border/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-8 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            {/* Logo ou Avatar pode ser adicionado aqui futuramente */}
-            <span className="font-extrabold text-2xl md:text-3xl tracking-tight text-primary drop-shadow-sm">Iris Roberto</span>
-          </div>
+          <motion.div 
+            className="flex items-center gap-3"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="font-extrabold text-2xl md:text-3xl tracking-tight bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent drop-shadow-sm">
+              Iris Roberto
+            </span>
+          </motion.div>
           <nav className="hidden md:flex gap-8">
             {[
               { id: "home", label: "Home" },
@@ -139,55 +145,153 @@ const Index = () => {
               { id: "performance", label: "Performance" },
               { id: "certifications", label: "Certificações" },
               { id: "contact", label: "Contato" }
-            ].map((item) => (
-              <button
+            ].map((item, index) => (
+              <motion.button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`text-base font-semibold tracking-wide transition-colors px-2 py-1 rounded-md hover:bg-primary/10 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 ${
-                  activeSection === item.id ? "text-primary underline underline-offset-4" : "text-muted-foreground"
+                className={`text-base font-semibold tracking-wide transition-all duration-300 px-4 py-2 rounded-lg hover:bg-gradient-to-r hover:from-primary/20 hover:to-blue-600/20 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 relative overflow-hidden ${
+                  activeSection === item.id ? "text-primary bg-gradient-to-r from-primary/10 to-blue-600/10" : "text-muted-foreground"
                 }`}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 {item.label}
-              </button>
+                {activeSection === item.id && (
+                  <motion.div
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary to-blue-600"
+                    layoutId="activeTab"
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+                )}
+              </motion.button>
             ))}
           </nav>
-          <div className="flex items-center gap-2">
+          <motion.div 
+            className="flex items-center gap-2"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+          >
             <ThemeToggle />
-          </div>
+          </motion.div>
         </div>
       </header>
 
       {/* Botão de Download de Currículo */}
-      <div className="w-full flex justify-center bg-background pt-24 pb-2">
-        <a
-          href="/curriculo-iris-roberto.pdf"
-          download
-          aria-label="Baixar currículo em PDF de Iris Roberto dos Santos Ferreira"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-bold shadow hover:bg-primary/80 transition-colors border border-primary/30 text-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/70"
+      <motion.div 
+        className="w-full flex justify-center bg-background pt-24 pb-2"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.3 }}
+      >
+        <motion.button
+          disabled
+          aria-label="Botão de download de currículo desabilitado"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-gray-400 to-gray-500 text-gray-600 font-bold shadow-lg border border-gray-300 text-lg cursor-not-allowed opacity-50 backdrop-blur-sm"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
         >
           <Download className="w-5 h-5" aria-hidden="true" />
           Baixar Currículo
-        </a>
-      </div>
+        </motion.button>
+      </motion.div>
 
       <main className="pt-16">
         {/* Bloco de Capa e Foto de Perfil no Topo */}
-        <section className="relative w-full flex flex-col items-center justify-center min-h-[340px] md:min-h-[420px] bg-gradient-to-b from-background to-secondary/10 border-b border-border overflow-hidden">
-          <img src={capaImg} alt="Capa visual do portfólio" className="absolute inset-0 w-full h-full object-cover object-center opacity-80" style={{zIndex:1}} />
-          <div className="relative z-10 flex flex-col items-center justify-center pt-10 md:pt-16">
-            <Avatar className="w-40 h-40 md:w-48 md:h-48 ring-4 ring-white/40 shadow-lg mb-4">
-              <AvatarImage src="/lovable-uploads/95d41298-d4bd-428b-a0b6-7af7ff2a1262.png" alt="Iris Roberto dos Santos Ferreira" />
-              <AvatarFallback className="text-2xl bg-white/20">IR</AvatarFallback>
-            </Avatar>
-            <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-lg mb-2 text-center">Iris Roberto dos Santos Ferreira</h1>
-            <p className="text-xl md:text-2xl text-white/90 drop-shadow mb-4 text-center">Liderança em Engenharia de Energia e Inovação Sustentável</p>
+        <motion.section 
+          id="home"
+          className="relative w-full flex flex-col items-center justify-center min-h-[340px] md:min-h-[420px] bg-gradient-to-b from-background to-secondary/10 border-b border-border overflow-hidden"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
+          {/* Elementos flutuantes de fundo */}
+          <div className="absolute inset-0 overflow-hidden">
+            {[...Array(6)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-2 h-2 bg-primary/20 rounded-full"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                }}
+                animate={{
+                  y: [0, -20, 0],
+                  opacity: [0.3, 0.8, 0.3],
+                }}
+                transition={{
+                  duration: 3 + Math.random() * 2,
+                  repeat: Infinity,
+                  delay: Math.random() * 2,
+                }}
+              />
+            ))}
           </div>
-        </section>
+          
+          <motion.img 
+            src={capaImg} 
+            alt="Capa visual do portfólio" 
+            className="absolute inset-0 w-full h-full object-cover object-center opacity-80" 
+            style={{zIndex:1}}
+            initial={{ scale: 1.1 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1.5 }}
+          />
+          
+          <div className="relative z-10 flex flex-col items-center justify-center pt-10 md:pt-16">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ duration: 0.8, delay: 0.5, type: "spring", stiffness: 200 }}
+            >
+              <Avatar className="w-40 h-40 md:w-48 md:h-48 ring-4 ring-white/40 shadow-2xl mb-4 relative">
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary/20 to-blue-600/20 animate-pulse" />
+                <AvatarImage src="/lovable-uploads/95d41298-d4bd-428b-a0b6-7af7ff2a1262.png" alt="Iris Roberto dos Santos Ferreira" />
+                <AvatarFallback className="text-2xl bg-white/20">IR</AvatarFallback>
+              </Avatar>
+            </motion.div>
+            
+            <motion.h1 
+              className="text-4xl md:text-6xl font-bold text-white drop-shadow-lg mb-2 text-center bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+            >
+              Iris Roberto dos Santos Ferreira
+            </motion.h1>
+            
+            <motion.p 
+              className="text-xl md:text-2xl text-white/90 drop-shadow mb-4 text-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.9 }}
+            >
+              Liderança em Engenharia de Energia e Inovação Sustentável
+            </motion.p>
+          </div>
+        </motion.section>
 
         {/* Depoimentos */}
-        <section className="w-full flex justify-center bg-background py-12 border-b border-border">
+        <motion.section 
+          className="w-full flex justify-center bg-background py-12 border-b border-border"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8 }}
+        >
           <div className="max-w-5xl w-full px-4">
-            <h3 className="text-2xl md:text-3xl font-bold text-center text-primary mb-8">Depoimentos</h3>
+            <motion.h3 
+              className="text-2xl md:text-3xl font-bold text-center text-primary mb-8"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              Depoimentos
+            </motion.h3>
             <div className="grid md:grid-cols-3 gap-6">
               {[{
                 nome: "Ana Souza",
@@ -208,89 +312,164 @@ const Index = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.5 }}
                   transition={{ duration: 0.6, delay: i * 0.15 }}
-                  className="bg-white dark:bg-accent/30 rounded-xl shadow-md p-6 border border-primary/10 flex flex-col items-center"
+                  whileHover={{ 
+                    scale: 1.05, 
+                    boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
+                    transition: { duration: 0.3 }
+                  }}
+                  className="bg-white dark:bg-accent/30 rounded-xl shadow-md p-6 border border-primary/10 flex flex-col items-center backdrop-blur-sm hover:border-primary/30 transition-all duration-300"
                 >
-                  <span className="font-semibold text-lg text-primary mb-2">{dep.nome}</span>
-                  <span className="text-xs text-muted-foreground mb-3">{dep.cargo}</span>
-                  <p className="text-sm text-foreground italic">"{dep.texto}"</p>
+                  <motion.span 
+                    className="font-semibold text-lg text-primary mb-2"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ delay: i * 0.15 + 0.3 }}
+                  >
+                    {dep.nome}
+                  </motion.span>
+                  <motion.span 
+                    className="text-xs text-muted-foreground mb-3"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ delay: i * 0.15 + 0.4 }}
+                  >
+                    {dep.cargo}
+                  </motion.span>
+                  <motion.p 
+                    className="text-sm text-foreground italic text-center"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ delay: i * 0.15 + 0.5 }}
+                  >
+                    "{dep.texto}"
+                  </motion.p>
                 </motion.div>
               ))}
             </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* What is Energy Engineering Section */}
-        <section className="py-20 px-6 bg-gradient-to-br from-background to-accent/20">
+        <motion.section 
+          id="about"
+          className="py-20 px-6 bg-gradient-to-br from-background to-accent/20"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8 }}
+        >
           <div className="container mx-auto max-w-6xl">
-            <h2 className="text-4xl font-bold text-center mb-12 text-primary">O que é Engenharia de Energia?</h2>
-            <Card className="shadow-[var(--shadow-elegant)] mb-12">
-              <CardContent className="p-8">
-                <div className="grid md:grid-cols-2 gap-8 items-center">
-                  <div>
-                    <h3 className="text-2xl font-bold mb-4 text-primary">Uma Especialização Única</h3>
-                    <p className="text-lg leading-relaxed mb-4">
-                      A <strong>Engenharia de Energia</strong> é uma formação especializada e ainda pouco conhecida no Brasil, 
-                      que capacita profissionais para dominar todas as modalidades de geração de energia elétrica.
-                    </p>
-                    <p className="text-lg leading-relaxed">
-                      Diferente de outras engenharias tradicionais, esta área abrange um conhecimento integrado e 
-                      multidisciplinar, desde sistemas fotovoltáicos até as mais avançadas tecnologias energéticas.
-                    </p>
+            <motion.h2 
+              className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              O que é Engenharia de Energia?
+            </motion.h2>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <Card className="shadow-[var(--shadow-elegant)] mb-12 backdrop-blur-sm border-primary/10 hover:border-primary/30 transition-all duration-300">
+                <CardContent className="p-8">
+                  <div className="grid md:grid-cols-2 gap-8 items-center">
+                    <motion.div
+                      initial={{ opacity: 0, x: -30 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.6, delay: 0.4 }}
+                    >
+                      <h3 className="text-2xl font-bold mb-4 text-primary">Uma Especialização Única</h3>
+                      <p className="text-lg leading-relaxed mb-4">
+                        A <strong>Engenharia de Energia</strong> é uma formação especializada e ainda pouco conhecida no Brasil, 
+                        que capacita profissionais para dominar todas as modalidades de geração de energia elétrica.
+                      </p>
+                      <p className="text-lg leading-relaxed">
+                        Diferente de outras engenharias tradicionais, esta área abrange um conhecimento integrado e 
+                        multidisciplinar, desde sistemas fotovoltáicos até as mais avançadas tecnologias energéticas.
+                      </p>
+                    </motion.div>
+                    <motion.div 
+                      className="grid grid-cols-2 gap-4"
+                      initial={{ opacity: 0, x: 30 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.6, delay: 0.6 }}
+                    >
+                      {[
+                        { icon: Sun, label: "Solar", gradient: "from-yellow-400 to-orange-500" },
+                        { icon: Atom, label: "Nuclear", gradient: "from-green-400 to-blue-500" },
+                        { icon: Wind, label: "Eólica", gradient: "from-blue-400 to-cyan-500" },
+                        { icon: Waves, label: "Hidrelétrica", gradient: "from-blue-500 to-purple-500" },
+                        { icon: Waves, label: "Maremotriz", gradient: "from-cyan-400 to-blue-500" },
+                        { icon: Thermometer, label: "Geotérmica", gradient: "from-red-400 to-orange-500" },
+                        { icon: Leaf, label: "Biomassa", gradient: "from-green-400 to-emerald-500" },
+                        { icon: Zap, label: "Termelétrica", gradient: "from-purple-400 to-pink-500" }
+                      ].map((item, index) => (
+                        <motion.div 
+                          key={item.label}
+                          className="text-center p-4 bg-muted/30 rounded-lg backdrop-blur-sm hover:bg-muted/50 transition-all duration-300 group"
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.4, delay: 0.8 + index * 0.1 }}
+                          whileHover={{ scale: 1.05, y: -5 }}
+                        >
+                          <div className={`w-8 h-8 mx-auto mb-2 bg-gradient-to-r ${item.gradient} rounded-full flex items-center justify-center group-hover:animate-pulse`}>
+                            <item.icon className="h-4 w-4 text-white" />
+                          </div>
+                          <p className="font-semibold text-sm">{item.label}</p>
+                        </motion.div>
+                      ))}
+                    </motion.div>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="text-center p-4 bg-muted/30 rounded-lg">
-                      <Sun className="h-8 w-8 mx-auto mb-2 text-primary" />
-                      <p className="font-semibold">Solar</p>
-                    </div>
-                    <div className="text-center p-4 bg-muted/30 rounded-lg">
-                      <Atom className="h-8 w-8 mx-auto mb-2 text-primary" />
-                      <p className="font-semibold">Nuclear</p>
-                    </div>
-                    <div className="text-center p-4 bg-muted/30 rounded-lg">
-                      <Wind className="h-8 w-8 mx-auto mb-2 text-primary" />
-                      <p className="font-semibold">Eólica</p>
-                    </div>
-                    <div className="text-center p-4 bg-muted/30 rounded-lg">
-                      <Waves className="h-8 w-8 mx-auto mb-2 text-primary" />
-                      <p className="font-semibold">Hidrelétrica</p>
-                    </div>
-                    <div className="text-center p-4 bg-muted/30 rounded-lg">
-                      <Waves className="h-8 w-8 mx-auto mb-2 text-primary" />
-                      <p className="font-semibold">Maremotriz</p>
-                    </div>
-                    <div className="text-center p-4 bg-muted/30 rounded-lg">
-                      <Thermometer className="h-8 w-8 mx-auto mb-2 text-primary" />
-                      <p className="font-semibold">Geotérmica</p>
-                    </div>
-                    <div className="text-center p-4 bg-muted/30 rounded-lg">
-                      <Leaf className="h-8 w-8 mx-auto mb-2 text-primary" />
-                      <p className="font-semibold">Biomassa</p>
-                    </div>
-                    <div className="text-center p-4 bg-muted/30 rounded-lg">
-                      <Zap className="h-8 w-8 mx-auto mb-2 text-primary" />
-                      <p className="font-semibold">Termelétrica</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </motion.div>
             
             {/* Tipos de Energia Renovável - Interactive Section */}
-            <h3 className="text-3xl font-bold text-center mb-8 text-primary">Tipos de Energia Renovável</h3>
+            <motion.h3 
+              className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              Tipos de Energia Renovável
+            </motion.h3>
+            
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
               <Dialog>
                 <DialogTrigger asChild>
-                  <Card className="text-center shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elegant)] transition-all cursor-pointer hover:scale-105">
-                    <CardHeader>
-                      <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full flex items-center justify-center">
-                        <Sun className="h-8 w-8 text-white" />
-                      </div>
-                      <CardTitle className="text-lg">Energia Solar Fotovoltáica</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm">Conversão direta da luz solar em eletricidade através do efeito fotovoltáico...</p>
-                    </CardContent>
-                  </Card>
+                  <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.1 }}
+                    whileHover={{ scale: 1.05, rotateY: 5 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Card className="text-center shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elegant)] transition-all cursor-pointer border-orange-200 hover:border-orange-400 backdrop-blur-sm">
+                      <CardHeader>
+                        <motion.div 
+                          className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full flex items-center justify-center"
+                          whileHover={{ rotate: 360 }}
+                          transition={{ duration: 0.6 }}
+                        >
+                          <Sun className="h-8 w-8 text-white" />
+                        </motion.div>
+                        <CardTitle className="text-lg">Energia Solar Fotovoltáica</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm">Conversão direta da luz solar em eletricidade através do efeito fotovoltáico...</p>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
                 </DialogTrigger>
                 <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
                   <DialogHeader>
@@ -1241,7 +1420,7 @@ const Index = () => {
               </CardContent>
             </Card>
           </div>
-        </section>
+        </motion.section>
 
         {/* About Section */}
         <section id="about" className="py-20 px-6 bg-accent/30">
