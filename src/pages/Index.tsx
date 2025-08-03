@@ -63,14 +63,26 @@ const Index = () => {
 
   const scrollToSection = (sectionId: string) => {
     setActiveSection(sectionId);
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+    
+    // Se for a seção "about", direcionar especificamente para "sobre-mim"
+    const targetId = sectionId === "about" ? "sobre-mim" : sectionId;
+    const element = document.getElementById(targetId);
+    
+    if (element) {
+      const headerHeight = 80; // Altura aproximada do header
+      const elementPosition = element.offsetTop - headerHeight;
+      window.scrollTo({
+        top: elementPosition,
+        behavior: "smooth"
+      });
+    }
   };
 
   const experienceData = [
     {
       company: "EcoPower Energia Solar",
       position: "Supervisor de Engenharia",
-      period: "2024 - Atual",
+      period: "2023 - Atual",
       location: "São Paulo, SP",
       achievements: [
         "Liderança de equipe de 49 colaboradores diretos",
@@ -82,9 +94,9 @@ const Index = () => {
     },
     {
       company: "Solarium Energia",
-      position: "Engenheiro de Projetos",
+      position: "Gerente de Operações",
       period: "2022 - 2024",
-      location: "São Paulo, SP",
+      location: "Anápolis, GO",
       achievements: [
         "Desenvolvimento de projetos fotovoltaicos residenciais e comerciais",
         "Estudos de viabilidade técnica e econômica",
@@ -93,12 +105,13 @@ const Index = () => {
     },
     {
       company: "Pro-W Engenharia",
-      position: "Engenheiro Júnior",
+      position: "Gerente geral",
       period: "2020 - 2022",
-      location: "São Paulo, SP",
+      location: "Anápolis, GO",
       achievements: [
         "Projetos de subestações de energia",
         "Estudos de proteção e seletividade",
+        "Automação industrial",
         "Desenvolvimento de projetos elétricos industriais"
       ]
     }
@@ -294,16 +307,16 @@ const Index = () => {
             </motion.h3>
             <div className="grid md:grid-cols-3 gap-6">
               {[{
-                nome: "Ana Souza",
-                cargo: "Gerente de Projetos, Solarium Energia",
+                nome: "Ana Paula",
+                cargo: "Gerente de Compras, Pro-W Engenharia",
                 texto: "Trabalhar com Iris foi uma experiência transformadora. Sua liderança e visão estratégica elevaram o desempenho da equipe a outro nível."
               }, {
-                nome: "Carlos Lima",
-                cargo: "Diretor Técnico, EcoPower",
+                nome: "Deyvid Emidio",
+                cargo: "Lider da equipe de projetos, EcoPower",
                 texto: "Profissional dedicado, inovador e com grande capacidade de gestão. Iris entrega resultados acima do esperado."
               }, {
-                nome: "Juliana Martins",
-                cargo: "Coordenadora de RH, Pro-W Engenharia",
+                nome: "Anaelson Rodrigues",
+                cargo: "CEO, Solarium Energia",
                 texto: "Além do conhecimento técnico, Iris se destaca pela empatia e habilidade de motivar pessoas. Recomendo fortemente!"
               }].map((dep, i) => (
                 <motion.div
@@ -1425,7 +1438,7 @@ const Index = () => {
         {/* About Section */}
         <section id="about" className="py-20 px-6 bg-accent/30">
           <div className="container mx-auto max-w-6xl">
-            <h2 className="text-4xl font-bold text-center mb-12 text-primary">Sobre Mim</h2>
+            <h2 id="sobre-mim" className="text-4xl font-bold text-center mb-12 text-primary">Sobre Mim</h2>
             <div className="flex flex-col gap-8 w-full">
               <Card className="shadow-[var(--shadow-card)] w-full flex flex-col justify-between p-8">
                 <CardHeader>
@@ -1436,14 +1449,17 @@ const Index = () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <p className="text-lg leading-relaxed">
-                    Sou Engenheiro de Energia com trajetória consolidada e visão estratégica voltada para a excelência operacional e a inovação no setor elétrico. Minha formação complementar em manutenção de aeronaves e logística fortalece uma abordagem sistêmica e orientada a resultados, permitindo integrar conhecimentos multidisciplinares na condução de projetos complexos.
+                  Possuo mais de seis anos de experiência em posições de liderança na área de engenharia, onde atuei com protagonismo na estruturação de times, redefinição de fluxos operacionais e implementação de controles de performance em ambientes de alta complexidade.
                   </p>
                   <p className="text-lg leading-relaxed">
-                    Com mais de seis anos de experiência na liderança de equipes de engenharia e no gerenciamento de projetos de geração distribuída, venho construindo entregas consistentes no segmento de energia fotovoltaica. Atualmente, como Supervisor do Departamento de Engenharia em uma empresa de referência nacional, lidero a execução de aproximadamente 2.500 projetos por mês, assegurando performance técnica, cumprimento rigoroso de prazos e otimização de custos.
-                  </p>
+                  Minha abordagem gerencial é pautada na meritocracia, colaboração intersetorial e metodologias ágeis, promovendo entregas consistentes, escaláveis e alinhadas ao planejamento estratégico das organizações.                  </p>
                   <p className="text-lg leading-relaxed">
-                    Minha atuação se destaca por gerir portfólios de engenharia de forma estratégica, implementando metodologias ágeis e promovendo um ambiente colaborativo e orientado à melhoria contínua. Tenho sólida vivência em planejamento de manutenções, definição e acompanhamento de indicadores de desempenho e implementação de controles de qualidade robustos. Minha experiência prática junto a sistemas elétricos, automação e tecnologias emergentes reforça minha capacidade de conduzir projetos sustentáveis e escaláveis, alinhados às demandas de um setor em transformação constante.
-                  </p>
+                  Formado em Engenharia de Energia e com especializações em manutenção aeronáutica, logística e inteligência artificial, adoto uma visão sistêmica e orientada a resultados, conectando dados, processos e pessoas em prol de metas bem definidas e sustentáveis.                  </p>
+                  <p className="text-lg leading-relaxed">
+                  Atualmente lidero um departamento com produção mensal de mais de 2.500 projetos, sendo responsável direto pela definição de indicadores-chave, governança técnica, otimização de recursos e elevação da maturidade operacional do time.                  </p>  
+                  <p className="text-lg leading-relaxed"> 
+                  Sou casado, pai de dois filhos, natural de Brasília-DF e não possuo restrições para viagens ou mudanças de cidade. Estou preparado para contribuir em posições de gerência ou diretoria, agregando visão estratégica, capacidade analítica e liderança adaptativa, com foco constante em performance, eficiência e geração de valor.                  </p>    
+                
                 </CardContent>
               </Card>
 
@@ -1507,6 +1523,128 @@ const Index = () => {
                       <li>Gestão de Pessoas</li>
                       <li>Gestão de Processos</li>
                     </ul>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* Certifications Section */}
+        <section id="certifications" className="py-20 px-6 bg-accent/30">
+          <div className="container mx-auto max-w-6xl">
+            <h2 className="text-4xl font-bold text-center mb-12 text-primary">Certificações e Cursos</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <Card className="shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elegant)] transition-shadow">
+                <CardHeader>
+                  <CardTitle className="flex items-center text-xl">
+                    <Award className="mr-3 h-6 w-6 text-primary" />
+                    Gestão Ágil
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base">
+                    Metodologias Scrum e Kanban aplicadas a projetos de engenharia
+                  </CardDescription>
+                  <div className="mt-4">
+                    <Badge variant="secondary" className="mr-2 mb-2">Scrum Master</Badge>
+                    <Badge variant="secondary" className="mr-2 mb-2">Kanban</Badge>
+                    <Badge variant="secondary" className="mr-2 mb-2">Jira</Badge>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elegant)] transition-shadow">
+                <CardHeader>
+                  <CardTitle className="flex items-center text-xl">
+                    <Code className="mr-3 h-6 w-6 text-primary" />
+                    Python
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base">
+                    Desenvolvimento de automações e análise de dados
+                  </CardDescription>
+                  <div className="mt-4">
+                    <Badge variant="secondary" className="mr-2 mb-2">Pandas</Badge>
+                    <Badge variant="secondary" className="mr-2 mb-2">NumPy</Badge>
+                    <Badge variant="secondary" className="mr-2 mb-2">Matplotlib</Badge>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elegant)] transition-shadow">
+                <CardHeader>
+                  <CardTitle className="flex items-center text-xl">
+                    <Cpu className="mr-3 h-6 w-6 text-primary" />
+                    RPA
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base">
+                    Automação de processos robóticos para otimização operacional
+                  </CardDescription>
+                  <div className="mt-4">
+                    <Badge variant="secondary" className="mr-2 mb-2">UiPath</Badge>
+                    <Badge variant="secondary" className="mr-2 mb-2">Blue Prism</Badge>
+                    <Badge variant="secondary" className="mr-2 mb-2">Automation</Badge>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elegant)] transition-shadow">
+                <CardHeader>
+                  <CardTitle className="flex items-center text-xl">
+                    <BarChart3 className="mr-3 h-6 w-6 text-primary" />
+                    Power BI
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base">
+                    Análise e visualização de dados para tomada de decisões
+                  </CardDescription>
+                  <div className="mt-4">
+                    <Badge variant="secondary" className="mr-2 mb-2">DAX</Badge>
+                    <Badge variant="secondary" className="mr-2 mb-2">M Query</Badge>
+                    <Badge variant="secondary" className="mr-2 mb-2">Dashboards</Badge>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elegant)] transition-shadow">
+                <CardHeader>
+                  <CardTitle className="flex items-center text-xl">
+                    <Lightbulb className="mr-3 h-6 w-6 text-primary" />
+                    Inteligência Artificial
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base">
+                    Aplicação de IA em projetos de energia e automação
+                  </CardDescription>
+                  <div className="mt-4">
+                    <Badge variant="secondary" className="mr-2 mb-2">Machine Learning</Badge>
+                    <Badge variant="secondary" className="mr-2 mb-2">Deep Learning</Badge>
+                    <Badge variant="secondary" className="mr-2 mb-2">NLP</Badge>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elegant)] transition-shadow">
+                <CardHeader>
+                  <CardTitle className="flex items-center text-xl">
+                    <Target className="mr-3 h-6 w-6 text-primary" />
+                    Gestão Estratégica
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base">
+                    Planejamento estratégico e gestão de indicadores de performance
+                  </CardDescription>
+                  <div className="mt-4">
+                    <Badge variant="secondary" className="mr-2 mb-2">KPI</Badge>
+                    <Badge variant="secondary" className="mr-2 mb-2">OKR</Badge>
+                    <Badge variant="secondary" className="mr-2 mb-2">BSC</Badge>
                   </div>
                 </CardContent>
               </Card>
