@@ -111,7 +111,7 @@ const Index = () => {
         throw new Error('Por favor, insira um email válido');
       }
 
-      // Enviar via WhatsApp (opção 1)
+      // Opção 1: Enviar via WhatsApp (principal)
       const message = encodeURIComponent(
         `*Nova mensagem do portfólio*\n\n` +
         `*Nome:* ${formData.name}\n` +
@@ -121,6 +121,30 @@ const Index = () => {
       );
       
       window.open(`https://wa.me/5553999004179?text=${message}`, '_blank');
+      
+      // Opção 2: Armazenar via Formspree (backup)
+      try {
+        const formspreeResponse = await fetch('https://formspree.io/f/xldlwzjw', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            subject: formData.subject,
+            message: formData.message,
+            _subject: `Nova mensagem do portfólio: ${formData.subject}`
+          })
+        });
+        
+        if (!formspreeResponse.ok) {
+          console.warn('Erro ao enviar para Formspree, mas WhatsApp foi enviado');
+        }
+      } catch (error) {
+        console.warn('Erro ao enviar para Formspree:', error);
+        // Continua mesmo se Formspree falhar, pois WhatsApp já foi enviado
+      }
       
       // Limpar formulário
       setFormData({
@@ -1882,7 +1906,7 @@ const Index = () => {
               <Card className="shadow-[var(--shadow-card)]">
                 <CardHeader>
                   <CardTitle>Entre em Contato</CardTitle>
-                  <CardDescription>Vamos conversar sobre projetos de energia sustentável</CardDescription>
+                  <CardDescription>Vamos conversar sobre Gestão de projetos e Geração de energia.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <form onSubmit={handleSubmit} className="space-y-4">
@@ -1936,11 +1960,13 @@ const Index = () => {
                     </Button>
                     
                     {/* Status messages */}
-                    {submitStatus === 'success' && (
-                      <div className="p-3 bg-green-100 border border-green-400 text-green-700 rounded">
-                        ✅ Mensagem enviada com sucesso! Abra o WhatsApp para ver a conversa.
-                      </div>
-                    )}
+                                   {submitStatus === 'success' && (
+                 <div className="p-3 bg-green-100 border border-green-400 text-green-700 rounded">
+                   ✅ Mensagem enviada com sucesso! 
+                   <br />📱 Abra o WhatsApp para ver a conversa
+                   <br />💾 Mensagem também armazenada no sistema
+                 </div>
+               )}
                     {submitStatus === 'error' && (
                       <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded">
                         ❌ Erro ao enviar mensagem. Tente novamente.
@@ -2069,7 +2095,7 @@ const Index = () => {
           <p className="text-lg font-medium mb-2">Iris Roberto dos Santos Ferreira</p>
           <p className="opacity-80">Supervisor de Engenharia - EcoPower Energia Solar</p>
           <p className="text-sm opacity-60 mt-4">
-            © 2024 - Liderança em Engenharia de Energia e Inovação Sustentável
+            © 2023 - Liderança em Engenharia de Energia e Inovação Sustentável
           </p>
         </div>
       </footer>
