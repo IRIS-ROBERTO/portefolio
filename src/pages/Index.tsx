@@ -178,7 +178,7 @@ const Index = () => {
     {
       company: "EcoPower Energia Solar",
       position: "Supervisor de Engenharia",
-      period: "2023 - Atual",
+      period: "2023-Atual",
       location: "São Paulo, SP",
       achievements: [
         "Liderança de equipe de 49 colaboradores diretos",
@@ -1645,7 +1645,7 @@ const Index = () => {
                   <div className="mt-4">
                     <Badge variant="secondary" className="mr-2 mb-2">Scrum Master</Badge>
                     <Badge variant="secondary" className="mr-2 mb-2">Kanban</Badge>
-                    <Badge variant="secondary" className="mr-2 mb-2">Jira</Badge>
+                    
                   </div>
                 </CardContent>
               </Card>
@@ -1681,9 +1681,9 @@ const Index = () => {
                     Automação de processos robóticos para otimização operacional
                   </CardDescription>
                   <div className="mt-4">
-                    <Badge variant="secondary" className="mr-2 mb-2">UiPath</Badge>
-                    <Badge variant="secondary" className="mr-2 mb-2">Blue Prism</Badge>
-                    <Badge variant="secondary" className="mr-2 mb-2">Automation</Badge>
+                    <Badge variant="secondary" className="mr-2 mb-2">automação-web</Badge>
+                    <Badge variant="secondary" className="mr-2 mb-2">automação-desktop</Badge>
+                    
                   </div>
                 </CardContent>
               </Card>
@@ -1721,7 +1721,7 @@ const Index = () => {
                   <div className="mt-4">
                     <Badge variant="secondary" className="mr-2 mb-2">Machine Learning</Badge>
                     <Badge variant="secondary" className="mr-2 mb-2">Deep Learning</Badge>
-                    <Badge variant="secondary" className="mr-2 mb-2">NLP</Badge>
+                    
                   </div>
                 </CardContent>
               </Card>
@@ -1740,7 +1740,7 @@ const Index = () => {
                   <div className="mt-4">
                     <Badge variant="secondary" className="mr-2 mb-2">KPI</Badge>
                     <Badge variant="secondary" className="mr-2 mb-2">OKR</Badge>
-                    <Badge variant="secondary" className="mr-2 mb-2">BSC</Badge>
+                    
                   </div>
                 </CardContent>
               </Card>
