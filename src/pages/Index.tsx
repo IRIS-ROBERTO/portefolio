@@ -358,7 +358,7 @@ const Index = () => {
             >
               <Avatar className="w-40 h-40 md:w-48 md:h-48 ring-4 ring-white/40 shadow-2xl mb-4 relative">
                 <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary/20 to-blue-600/20 animate-pulse" />
-                <AvatarImage src="/lovable-uploads/95d41298-d4bd-428b-a0b6-7af7ff2a1262.png" alt="Iris Roberto dos Santos Ferreira" />
+                <AvatarImage src="/iris-avatar.png" alt="Iris Roberto dos Santos Ferreira" />
                 <AvatarFallback className="text-2xl bg-white/20">IR</AvatarFallback>
               </Avatar>
             </motion.div>
