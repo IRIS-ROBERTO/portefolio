@@ -4,11 +4,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { 
-  Zap, 
-  Sun, 
-  Building2, 
-  Target, 
+import {
+  Zap,
+  Sun,
+  Building2,
+  Target,
   TrendingUp,
   Lightbulb,
   Award,
@@ -28,7 +28,15 @@ import {
   Atom,
   Thermometer,
   Leaf,
-  Download
+  Download,
+  BookOpen,
+  Star,
+  Brain,
+  Factory,
+  Building,
+  Globe,
+  CheckCircle2,
+  ExternalLink
 } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
@@ -68,6 +76,40 @@ const Index = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  // Typewriter effect
+  const roles = [
+    "Liderança em Engenharia de Energia",
+    "Especialista em Inteligência Artificial",
+    "Especialista em Smart Cities",
+    "Especialista em BIM e Gestão de Obras",
+    "Especialista em Automação Industrial",
+    "Inovação Sustentável & Tecnologia"
+  ];
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [displayed, setDisplayed] = useState("");
+  const [typing, setTyping] = useState(true);
+
+  useEffect(() => {
+    const target = roles[roleIndex];
+    if (typing) {
+      if (displayed.length < target.length) {
+        const t = setTimeout(() => setDisplayed(target.slice(0, displayed.length + 1)), 60);
+        return () => clearTimeout(t);
+      } else {
+        const t = setTimeout(() => setTyping(false), 2000);
+        return () => clearTimeout(t);
+      }
+    } else {
+      if (displayed.length > 0) {
+        const t = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 30);
+        return () => clearTimeout(t);
+      } else {
+        setRoleIndex((i) => (i + 1) % roles.length);
+        setTyping(true);
+      }
+    }
+  }, [displayed, typing, roleIndex]);
 
   const scrollToSection = (sectionId: string) => {
     setActiveSection(sectionId);
@@ -231,6 +273,69 @@ const Index = () => {
     { name: "Projetista de Subestação", icon: Cpu }
   ];
 
+  const posGraduacoes = [
+    {
+      titulo: "Inteligência Artificial",
+      instituicao: "Faculdade Iguaçu",
+      periodo: "Set 2024 – Out 2025",
+      carga: "640 H/A",
+      tcc: "Levando IA para Produção: Desafios e Estratégias de Implementação",
+      nota: 93,
+      area: "Computação e Tecnologias da Informação e Comunicação (TIC)",
+      icon: Brain,
+      gradient: "from-violet-500 via-purple-500 to-indigo-600",
+      glow: "shadow-purple-500/30",
+      badge: "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300",
+      highlights: ["Deep Learning", "Reinforcement Learning", "Engenharia de Software para IA", "Matemática para IA"],
+      registro: "Nº 47422"
+    },
+    {
+      titulo: "BIM em Gerenciamento de Projetos e Qualidade de Obras",
+      instituicao: "Faculdade Iguaçu",
+      periodo: "Set 2024 – Set 2025",
+      carga: "720 H/A",
+      tcc: "Aplicações de BIM na Gestão de Projetos de Construção Civil",
+      nota: 96,
+      area: "Engenharia, Produção e Construção",
+      icon: Building,
+      gradient: "from-emerald-500 via-teal-500 to-cyan-600",
+      glow: "shadow-emerald-500/30",
+      badge: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300",
+      highlights: ["BIM Modelagem 4D", "Gerenciamento de Escopo", "Gestão de Riscos", "Ferramenta BIM em Projetos"],
+      registro: "Nº 39588"
+    },
+    {
+      titulo: "Automação Industrial",
+      instituicao: "Faculdade Iguaçu",
+      periodo: "Set 2024 – Set 2025",
+      carga: "720 H/A",
+      tcc: "Redes de Comunicação de Dados em Ambientes Industriais",
+      nota: 94,
+      area: "Engenharia, Produção e Construção",
+      icon: Factory,
+      gradient: "from-orange-500 via-amber-500 to-yellow-500",
+      glow: "shadow-orange-500/30",
+      badge: "bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300",
+      highlights: ["Internet das Coisas (IoT)", "Robótica Industrial", "Sistemas Embarcados", "Instrumentação Industrial"],
+      registro: "Nº 39587"
+    },
+    {
+      titulo: "Cidades Inteligentes – Smart Cities",
+      instituicao: "Faculdade Iguaçu",
+      periodo: "Set 2024 – Nov 2025",
+      carga: "720 H/A",
+      tcc: "Planejamento Energético e Fontes Alternativas de Energia em Smart Cities",
+      nota: 95,
+      area: "Engenharia, Produção e Construção",
+      icon: Globe,
+      gradient: "from-blue-500 via-cyan-500 to-sky-600",
+      glow: "shadow-blue-500/30",
+      badge: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
+      highlights: ["Mobilidade Sustentável", "Planejamento Energético", "Tecnologia BIM", "Governança Pública"],
+      registro: "Nº 56078"
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-background font-sans">
       {/* Navigation Header */}
@@ -249,7 +354,8 @@ const Index = () => {
           <nav className="hidden md:flex gap-8">
             {[
               { id: "home", label: "Home" },
-              { id: "about", label: "Sobre" },
+              { id: "posgraduacao", label: "Formação" },
+              { id: "sobre-mim", label: "Sobre" },
               { id: "experience", label: "Experiência" },
               { id: "performance", label: "Performance" },
               { id: "certifications", label: "Certificações" },
@@ -296,16 +402,17 @@ const Index = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.3 }}
       >
-        <motion.button
-          disabled
-          aria-label="Botão de download de currículo desabilitado"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-gray-400 to-gray-500 text-gray-600 font-bold shadow-lg border border-gray-300 text-lg cursor-not-allowed opacity-50 backdrop-blur-sm"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
+        <motion.a
+          href="/curriculo-iris-roberto.pdf"
+          download="Curriculo-Iris-Roberto-Ferreira.pdf"
+          aria-label="Baixar currículo de Iris Roberto dos Santos Ferreira"
+          className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-primary to-emerald-600 text-white font-bold shadow-xl text-lg hover:shadow-primary/30 hover:shadow-2xl border border-primary/20 transition-all duration-300"
+          whileHover={{ scale: 1.05, y: -2 }}
+          whileTap={{ scale: 0.97 }}
         >
           <Download className="w-5 h-5" aria-hidden="true" />
           Baixar Currículo
-        </motion.button>
+        </motion.a>
       </motion.div>
 
       <main className="pt-16">
@@ -372,19 +479,194 @@ const Index = () => {
               Iris Roberto dos Santos Ferreira
             </motion.h1>
             
-            <motion.p 
-              className="text-xl md:text-2xl text-white/90 drop-shadow mb-4 text-center"
+            <motion.p
+              className="text-xl md:text-2xl text-white/90 drop-shadow mb-4 text-center min-h-[2rem]"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.9 }}
             >
-              Liderança em Engenharia de Energia e Inovação Sustentável
+              <span className="typewriter-cursor">{displayed}</span>
             </motion.p>
+            {/* Badges das especializações no hero */}
+            <motion.div
+              className="flex flex-wrap justify-center gap-2 mt-2 mb-4 px-4"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.1 }}
+            >
+              {["Esp. IA", "Esp. Smart Cities", "Esp. BIM", "Esp. Automação Industrial"].map((tag) => (
+                <span key={tag} className="bg-white/20 backdrop-blur text-white text-xs px-3 py-1 rounded-full border border-white/30 font-medium">
+                  {tag}
+                </span>
+              ))}
+            </motion.div>
+          </div>
+        </motion.section>
+
+        {/* ═══ PÓS-GRADUAÇÕES ═══ */}
+        <motion.section
+          id="posgraduacao"
+          className="py-20 px-6 relative overflow-hidden"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.8 }}
+        >
+          {/* Background decorativo */}
+          <div className="absolute inset-0 bg-gradient-to-br from-background via-accent/10 to-background pointer-events-none" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-40" />
+
+          <div className="container mx-auto max-w-7xl relative">
+            {/* Título */}
+            <div className="text-center mb-14">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-semibold mb-4 border border-primary/20"
+              >
+                <GraduationCap className="w-4 h-4" />
+                Faculdade Iguaçu — Pós-Graduação Lato Sensu
+              </motion.div>
+              <motion.h2
+                className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary via-emerald-600 to-blue-600 bg-clip-text text-transparent mb-4"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.1 }}
+              >
+                Formação Especializada
+              </motion.h2>
+              <motion.p
+                className="text-lg text-muted-foreground max-w-2xl mx-auto"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                4 especializações concluídas simultaneamente em 2024-2025, consolidando expertise multidisciplinar em tecnologia, engenharia e inovação.
+              </motion.p>
+              {/* Stats resumo */}
+              <motion.div
+                className="flex flex-wrap justify-center gap-6 mt-8"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+              >
+                {[
+                  { label: "Especializações", value: "4" },
+                  { label: "Horas Acadêmicas", value: "2.800+" },
+                  { label: "Nota média TCC", value: "94,5" },
+                  { label: "Frequência", value: "100%" },
+                ].map((stat) => (
+                  <div key={stat.label} className="text-center bg-background/80 backdrop-blur border border-border/60 rounded-xl px-6 py-3 shadow-sm">
+                    <p className="text-2xl font-extrabold text-primary">{stat.value}</p>
+                    <p className="text-xs text-muted-foreground">{stat.label}</p>
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+
+            {/* Cards das Pós-Graduações */}
+            <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+              {posGraduacoes.map((pg, index) => (
+                <motion.div
+                  key={pg.titulo}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.6, delay: index * 0.12 }}
+                  whileHover={{ y: -6, transition: { duration: 0.25 } }}
+                  className={`group relative bg-background rounded-2xl border border-border/60 overflow-hidden shadow-lg hover:shadow-2xl hover:${pg.glow} transition-all duration-400`}
+                >
+                  {/* Topo colorido */}
+                  <div className={`h-1.5 w-full bg-gradient-to-r ${pg.gradient}`} />
+
+                  <div className="p-7">
+                    {/* Header */}
+                    <div className="flex items-start gap-4 mb-5">
+                      <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${pg.gradient} flex items-center justify-center flex-shrink-0 shadow-md group-hover:scale-110 transition-transform duration-300`}>
+                        <pg.icon className="w-7 h-7 text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-bold text-lg leading-tight text-foreground mb-1">{pg.titulo}</h3>
+                        <p className="text-sm text-muted-foreground">{pg.instituicao} · {pg.area.split(" e ")[0]}</p>
+                      </div>
+                      {/* Nota TCC badge */}
+                      <div className="flex-shrink-0 flex flex-col items-center">
+                        <div className="relative">
+                          <div className={`w-14 h-14 rounded-full bg-gradient-to-br ${pg.gradient} flex items-center justify-center shadow-md`}>
+                            <span className="text-white font-extrabold text-xl">{pg.nota}</span>
+                          </div>
+                          <Star className="absolute -top-1 -right-1 w-4 h-4 text-yellow-400 fill-yellow-400 drop-shadow" />
+                        </div>
+                        <p className="text-[10px] text-muted-foreground mt-1 text-center">nota TCC</p>
+                      </div>
+                    </div>
+
+                    {/* Infos */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      <span className="inline-flex items-center gap-1 text-xs text-muted-foreground bg-muted/60 rounded-lg px-2.5 py-1">
+                        <Calendar className="w-3 h-3" />{pg.periodo}
+                      </span>
+                      <span className="inline-flex items-center gap-1 text-xs text-muted-foreground bg-muted/60 rounded-lg px-2.5 py-1">
+                        <BookOpen className="w-3 h-3" />{pg.carga}
+                      </span>
+                      <span className="inline-flex items-center gap-1 text-xs text-muted-foreground bg-muted/60 rounded-lg px-2.5 py-1">
+                        <Award className="w-3 h-3" />Reg. {pg.registro}
+                      </span>
+                    </div>
+
+                    {/* TCC */}
+                    <div className={`rounded-xl p-3.5 mb-4 border ${pg.badge.includes('purple') ? 'bg-purple-50 border-purple-200 dark:bg-purple-900/20 dark:border-purple-800' : pg.badge.includes('emerald') ? 'bg-emerald-50 border-emerald-200 dark:bg-emerald-900/20 dark:border-emerald-800' : pg.badge.includes('orange') ? 'bg-orange-50 border-orange-200 dark:bg-orange-900/20 dark:border-orange-800' : 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800'}`}>
+                      <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">Trabalho de Conclusão de Curso</p>
+                      <p className="text-sm font-medium text-foreground leading-snug">"{pg.tcc}"</p>
+                    </div>
+
+                    {/* Disciplinas em destaque */}
+                    <div>
+                      <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-2">Disciplinas em Destaque</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {pg.highlights.map((h) => (
+                          <span key={h} className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full ${pg.badge}`}>
+                            <CheckCircle2 className="w-3 h-3" />{h}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Especialista badge */}
+                    <div className="mt-4 pt-4 border-t border-border/40 flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <GraduationCap className="w-4 h-4 text-primary" />
+                        <span className="text-xs font-semibold text-primary">Título: Especialista</span>
+                      </div>
+                      <span className="text-xs text-muted-foreground">Freq. 100%</span>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* CTA */}
+            <motion.div
+              className="text-center mt-12"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+            >
+              <p className="text-muted-foreground text-sm">
+                Todos os certificados emitidos pela <strong>Faculdade Iguaçu</strong> em conformidade com a <strong>Resolução CNE/CES nº 1 de 06/04/2018</strong>
+              </p>
+            </motion.div>
           </div>
         </motion.section>
 
         {/* Depoimentos */}
-        <motion.section 
+        <motion.section
           className="w-full flex justify-center bg-background py-12 border-b border-border"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -2090,13 +2372,53 @@ const Index = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-primary text-primary-foreground py-8 px-6">
-        <div className="container mx-auto text-center">
-          <p className="text-lg font-medium mb-2">Iris Roberto dos Santos Ferreira</p>
-          <p className="opacity-80">Supervisor de Engenharia - EcoPower Energia Solar</p>
-          <p className="text-sm opacity-60 mt-4">
-            © 2023 - Liderança em Engenharia de Energia e Inovação Sustentável
-          </p>
+      <footer className="bg-gradient-to-br from-primary via-emerald-700 to-primary text-primary-foreground py-12 px-6">
+        <div className="container mx-auto max-w-5xl">
+          <div className="grid md:grid-cols-3 gap-8 mb-8">
+            <div>
+              <p className="text-xl font-extrabold mb-1">Iris Roberto dos Santos Ferreira</p>
+              <p className="opacity-80 text-sm mb-3">Supervisor de Engenharia · EcoPower Energia Solar</p>
+              <div className="flex gap-2 flex-wrap">
+                <span className="bg-white/15 text-xs px-2 py-0.5 rounded-full">Esp. Inteligência Artificial</span>
+                <span className="bg-white/15 text-xs px-2 py-0.5 rounded-full">Esp. Smart Cities</span>
+                <span className="bg-white/15 text-xs px-2 py-0.5 rounded-full">Esp. BIM</span>
+                <span className="bg-white/15 text-xs px-2 py-0.5 rounded-full">Esp. Automação Industrial</span>
+              </div>
+            </div>
+            <div>
+              <p className="font-semibold mb-3 opacity-90">Especialidades</p>
+              <ul className="space-y-1 text-sm opacity-80">
+                <li>• Engenharia de Energia Solar</li>
+                <li>• BIM e Gerenciamento de Projetos</li>
+                <li>• Inteligência Artificial Aplicada</li>
+                <li>• Automação e IoT Industrial</li>
+                <li>• Cidades Inteligentes</li>
+              </ul>
+            </div>
+            <div>
+              <p className="font-semibold mb-3 opacity-90">Contato Rápido</p>
+              <div className="space-y-2">
+                <button
+                  onClick={() => window.open('https://wa.me/5553999004179', '_blank')}
+                  className="flex items-center gap-2 text-sm opacity-80 hover:opacity-100 transition-opacity"
+                >
+                  <span>📱 (53) 99900-4179</span>
+                </button>
+                <button
+                  onClick={() => window.open('https://www.linkedin.com/in/iris-roberto-engenharia-de-energia-sustent%C3%A1vel', '_blank')}
+                  className="flex items-center gap-2 text-sm opacity-80 hover:opacity-100 transition-opacity"
+                >
+                  <Linkedin className="w-4 h-4" />
+                  <span>LinkedIn</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="border-t border-white/20 pt-6 text-center">
+            <p className="text-sm opacity-60">
+              © 2025 · Iris Roberto dos Santos Ferreira · Liderança em Engenharia de Energia e Inovação Sustentável
+            </p>
+          </div>
         </div>
       </footer>
     </div>
