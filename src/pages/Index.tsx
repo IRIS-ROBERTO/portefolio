@@ -40,15 +40,17 @@ import {
 } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { useState, useEffect } from "react";
-import irisProfile from "@/assets/iris-profile.jpg";
+import { useState, useEffect, useRef } from "react";
 import solarPanel from "@/assets/solar-panel.png";
 import solarHouse from "@/assets/solar-house.png";
 import solarInstallation from "@/assets/solar-installation.jpg";
 import ecopowerHouse1 from "@/assets/ecopower-house-1.png";
 import ecopowerHouse3 from "@/assets/ecopower-house-3.png";
 import ecopowerHouse4 from "@/assets/ecopower-house-4.png";
-import { motion } from "framer-motion";
+import { motion, useScroll, useSpring } from "framer-motion";
+import ParticleField from "@/components/ParticleField";
+import { useCountUp } from "@/hooks/useCountUp";
+import { useTilt } from "@/hooks/useTilt";
 import empresarialImg from '@/assets/EMPRESARIAL.png';
 import ruralImg from '@/assets/RURAL.png';
 import industrialImg from '@/assets/INDUSTRIAL.png';
@@ -110,6 +112,15 @@ const Index = () => {
       }
     }
   }, [displayed, typing, roleIndex]);
+
+  // Scroll progress bar
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+
+  // Animated counters for performance section
+  const count2024 = useCountUp(26634, 2000);
+  const count2025 = useCountUp(17500, 1800);
+  const countTotal = useCountUp(44134, 2500);
 
   const scrollToSection = (sectionId: string) => {
     setActiveSection(sectionId);
@@ -338,8 +349,14 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background font-sans">
+      {/* Scroll progress bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 z-[60] h-[3px] origin-left"
+        style={{ scaleX, background: "linear-gradient(90deg, #22c55e, #06b6d4, #22c55e)", boxShadow: "0 0 12px #22c55e" }}
+      />
+
       {/* Navigation Header */}
-      <header className="fixed top-0 z-50 w-full bg-background/80 backdrop-blur-xl shadow-lg border-b border-border/50">
+      <header className="fixed top-[3px] z-50 w-full glass border-b border-primary/20 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-8 h-20 flex items-center justify-between">
           <motion.div 
             className="flex items-center gap-3"
@@ -406,7 +423,7 @@ const Index = () => {
           href="/curriculo-iris-roberto.pdf"
           download="Curriculo-Iris-Roberto-Ferreira.pdf"
           aria-label="Baixar currículo de Iris Roberto dos Santos Ferreira"
-          className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-primary to-emerald-600 text-white font-bold shadow-xl text-lg hover:shadow-primary/30 hover:shadow-2xl border border-primary/20 transition-all duration-300"
+          className="btn-neon inline-flex items-center gap-2 px-8 py-3 rounded-xl text-white font-bold text-lg transition-all duration-300"
           whileHover={{ scale: 1.05, y: -2 }}
           whileTap={{ scale: 0.97 }}
         >
@@ -417,13 +434,15 @@ const Index = () => {
 
       <main className="pt-16">
         {/* Bloco de Capa e Foto de Perfil no Topo */}
-        <motion.section 
+        <motion.section
           id="home"
-          className="relative w-full flex flex-col items-center justify-center min-h-[340px] md:min-h-[420px] bg-gradient-to-b from-background to-secondary/10 border-b border-border overflow-hidden"
+          className="scan-overlay relative w-full flex flex-col items-center justify-center min-h-[340px] md:min-h-[420px] bg-gradient-to-b from-background to-secondary/10 border-b border-border overflow-hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
         >
+          {/* Particle field background */}
+          <ParticleField />
           {/* Elementos flutuantes de fundo */}
           <div className="absolute inset-0 overflow-hidden">
             {[...Array(6)].map((_, i) => (
@@ -462,16 +481,21 @@ const Index = () => {
               initial={{ scale: 0, rotate: -180 }}
               animate={{ scale: 1, rotate: 0 }}
               transition={{ duration: 0.8, delay: 0.5, type: "spring", stiffness: 200 }}
+              className="relative flex items-center justify-center mb-4"
             >
-              <Avatar className="w-40 h-40 md:w-48 md:h-48 ring-4 ring-white/40 shadow-2xl mb-4 relative">
+              {/* Energy rings */}
+              <div className="energy-ring" />
+              <div className="energy-ring" style={{ animationDelay: "0.8s", opacity: 0.5 }} />
+              <Avatar className="w-40 h-40 md:w-48 md:h-48 ring-4 ring-primary/60 shadow-2xl relative z-10">
                 <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary/20 to-blue-600/20 animate-pulse" />
                 <AvatarImage src="/iris-avatar.png" alt="Iris Roberto dos Santos Ferreira" />
                 <AvatarFallback className="text-2xl bg-white/20">IR</AvatarFallback>
               </Avatar>
             </motion.div>
             
-            <motion.h1 
-              className="text-4xl md:text-6xl font-bold text-white drop-shadow-lg mb-2 text-center bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent"
+            <motion.h1
+              className="text-4xl md:text-6xl font-bold drop-shadow-lg mb-2 text-center glitch-text"
+              data-text="Iris Roberto dos Santos Ferreira"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.7 }}
@@ -530,7 +554,7 @@ const Index = () => {
                 Faculdade Iguaçu — Pós-Graduação Lato Sensu
               </motion.div>
               <motion.h2
-                className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary via-emerald-600 to-blue-600 bg-clip-text text-transparent mb-4"
+                className="text-4xl md:text-5xl font-bold shimmer-text mb-4"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -579,7 +603,7 @@ const Index = () => {
                   viewport={{ once: true, amount: 0.2 }}
                   transition={{ duration: 0.6, delay: index * 0.12 }}
                   whileHover={{ y: -6, transition: { duration: 0.25 } }}
-                  className={`group relative bg-background rounded-2xl border border-border/60 overflow-hidden shadow-lg hover:shadow-2xl hover:${pg.glow} transition-all duration-400`}
+                  className={`tilt-card group relative bg-background rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:${pg.glow} transition-all duration-400 gradient-border-animated`}
                 >
                   {/* Topo colorido */}
                   <div className={`h-1.5 w-full bg-gradient-to-r ${pg.gradient}`} />
@@ -1816,7 +1840,7 @@ const Index = () => {
         {/* About Section */}
         <section id="about" className="py-20 px-6 bg-accent/30">
           <div className="container mx-auto max-w-6xl">
-            <h2 id="sobre-mim" className="text-4xl font-bold text-center mb-12 text-primary">Sobre Mim</h2>
+            <h2 id="sobre-mim" className="text-4xl font-bold text-center mb-12 shimmer-text">Sobre Mim</h2>
             <div className="flex flex-col gap-8 w-full">
               <Card className="shadow-[var(--shadow-card)] w-full flex flex-col justify-between p-8">
                 <CardHeader>
@@ -1909,9 +1933,9 @@ const Index = () => {
         </section>
 
         {/* Certifications Section */}
-        <section id="certifications" className="py-20 px-6 bg-accent/30">
+        <section id="certifications" className="py-20 px-6 bg-accent/30 circuit-bg relative">
           <div className="container mx-auto max-w-6xl">
-            <h2 className="text-4xl font-bold text-center mb-12 text-primary">Certificações e Cursos</h2>
+            <h2 className="text-4xl font-bold text-center mb-12 shimmer-text">Certificações e Cursos</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               <Card className="shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elegant)] transition-shadow">
                 <CardHeader>
@@ -2033,7 +2057,7 @@ const Index = () => {
         {/* Experience Section */}
         <section id="experience" className="py-20 px-6">
           <div className="container mx-auto max-w-6xl">
-            <h2 className="text-4xl font-bold text-center mb-12 text-primary">Experiência Profissional</h2>
+            <h2 className="text-4xl font-bold text-center mb-12 shimmer-text">Experiência Profissional</h2>
             <div className="space-y-8">
               {experienceData.map((exp, index) => (
                 <Card key={index} className="shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elegant)] transition-shadow">
@@ -2069,9 +2093,9 @@ const Index = () => {
         </section>
 
         {/* Performance Section */}
-        <section id="performance" className="py-20 px-6 bg-accent/30">
+        <section id="performance" className="py-20 px-6 bg-accent/30 dot-grid-bg relative">
           <div className="container mx-auto max-w-6xl">
-            <h2 className="text-4xl font-bold text-center mb-12 text-primary">Performance</h2>
+            <h2 className="text-4xl font-bold text-center mb-12 shimmer-text">Performance</h2>
             
             {/* Projetos Supervisionados */}
             <Card className="shadow-[var(--shadow-elegant)] mb-8 bg-gradient-to-r from-primary/5 to-secondary/5">
@@ -2081,21 +2105,21 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <h3 className="text-3xl font-bold text-primary mb-2">26.634</h3>
+                  <div className="neon-border rounded-xl p-6 bg-background/60 backdrop-blur-sm">
+                    <h3 ref={count2024.ref as any} className="text-4xl font-bold neon-text mb-2">{count2024.value}</h3>
                     <p className="text-muted-foreground">Projetos em 2024</p>
                   </div>
-                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <h3 className="text-3xl font-bold text-primary mb-2">17.500</h3>
+                  <div className="neon-border rounded-xl p-6 bg-background/60 backdrop-blur-sm">
+                    <h3 ref={count2025.ref as any} className="text-4xl font-bold neon-text mb-2">{count2025.value}</h3>
                     <p className="text-muted-foreground">Projetos 2025 (até julho)</p>
                   </div>
-                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                    <h3 className="text-3xl font-bold text-green-600 mb-2">44.134</h3>
+                  <div className="neon-border rounded-xl p-6 bg-background/60 backdrop-blur-sm" style={{ borderColor: "rgba(34,197,94,0.8)", boxShadow: "0 0 20px rgba(34,197,94,0.3)" }}>
+                    <h3 ref={countTotal.ref as any} className="text-4xl font-bold mb-2" style={{ color: "#22c55e", textShadow: "0 0 20px #22c55e" }}>{countTotal.value}</h3>
                     <p className="text-muted-foreground"><strong>Total Supervisionado</strong></p>
                   </div>
                 </div>
                 <div className="mt-8 text-center">
-                  <Badge variant="secondary" className="text-lg px-6 py-2">
+                  <Badge variant="secondary" className="text-lg px-6 py-2 neon-border">
                     Produção média mensal: 2.500 projetos
                   </Badge>
                 </div>
