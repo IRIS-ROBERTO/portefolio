@@ -603,7 +603,7 @@ const Index = () => {
                   viewport={{ once: true, amount: 0.2 }}
                   transition={{ duration: 0.6, delay: index * 0.12 }}
                   whileHover={{ y: -6, transition: { duration: 0.25 } }}
-                  className={`tilt-card group relative bg-background rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:${pg.glow} transition-all duration-400 gradient-border-animated`}
+                  className={`tilt-card group relative bg-card rounded-2xl border border-border/60 overflow-hidden shadow-lg hover:shadow-2xl hover:${pg.glow} transition-all duration-400`}
                 >
                   {/* Topo colorido */}
                   <div className={`h-1.5 w-full bg-gradient-to-r ${pg.gradient}`} />
